@@ -50,8 +50,11 @@ Some objects will interrupt the rhythm of lines, such as block-level images or f
 
 ### Grid or no grid?
 
-TODO: explain tradeoffs between line-grid and rhythm proposals, and why having a grid is important
+The most significant difference between the CSS Line Grid and CSS Rhythm proposals is that the latter proposal doesn't actually establish a grid, but instead tries to simulate it by ensuring that the he height of all relevant objects matches the step size.  This places the burden on developers who want to maintain the rhythm to avoid features that aren't integrated with step sizing, and also a burden on developers of future CSS features to integrate all of them with step sizing so that they won't place such a burden on developers.  This makes me inclined to think that the CSS Rhythm will work in simple cases but fail in more complex (and realistic) ones.
 
+On the other hand, the CSS Line Grid proposal defines certain elements as establishing a grid, and certain points as aligning to that grid.  This means that if some CSS features don't integrate with the line grid, a small amount of content may be unaligned, but the next use of a feature (blocks, lines) that integrates with the line grid will bring the content back into alignment with the grid.
+
+One of the costs of the line grid proposal is that it requires disabling performance optimizations for moving content vertically during relayout without redoing layout on the internals of that content.  (These optimizations are also disabled in some other cases, such as the presence of floats next to the content.)  However, the optimization only needs to be disabled when moving content by a distance that is not a multiple of the grid height.  When most content fits itself to the grid, such changes will mostly cover small areas of content, though this depends somewhat on what mechanism is used to enable or disable the grid, and in particular whether the mechanism for doing so allows reenabling a grid established by a further ancestor that was disabled on a nearer ancestor (see next section).
 ### How to enable the grid?
 
 TODO: write about how flipping fewer properties is better
