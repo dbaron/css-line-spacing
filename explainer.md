@@ -45,3 +45,19 @@ However, it should also be possible to avoid alignment of baselines in adjacent 
 
 **It should be possible to choose different alignments for objects that interrupt the rhythm.**
 Some objects will interrupt the rhythm of lines, such as block-level images or figures (necessarily), or quotations printed in a different font (optionally).  Designers wish to choose multiple alignments for such objects.  (See, for example, comments from 小林 敏 (KOBAYASHI Toshi, こばやし とし, Kobayashi-sensei) in the [2017 April 20 discussion](https://lists.w3.org/Archives/Public/www-style/2017May/0050.html) under "Rhythm discussion notes", particularly "Ideal is centered [...], but some things are better top-aligned, e.g. side notes.")
+
+## Key technical decisions
+
+### Grid or no grid?
+
+TODO: explain tradeoffs between line-grid and rhythm proposals, and why having a grid is important
+
+### How to enable the grid?
+
+TODO: write about how flipping fewer properties is better
+
+TODO: write about integrating an implicit flip of `line-box-contain`
+
+### How to align intrusions within the grid?
+
+TODO: compare approaches in line-grid and rhythm, vs. using css-align mechanisms directly
