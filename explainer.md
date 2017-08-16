@@ -50,16 +50,39 @@ Some objects will interrupt the rhythm of lines, such as block-level images or f
 
 ### Grid or no grid?
 
-The most significant difference between the CSS Line Grid and CSS Rhythm proposals is that the latter proposal doesn't actually establish a grid, but instead tries to simulate it by ensuring that the he height of all relevant objects matches the step size.  This places the burden on developers who want to maintain the rhythm to avoid features that aren't integrated with step sizing, and also a burden on developers of future CSS features to integrate all of them with step sizing so that they won't place such a burden on developers.  This makes me inclined to think that the CSS Rhythm will work in simple cases but fail in more complex (and realistic) ones.
+The most significant difference between the CSS Line Grid and CSS Rhythmic Sizing proposals is that the latter proposal doesn't actually establish a grid, but instead tries to simulate it by ensuring that the he height of all relevant objects matches the step size.  This places the burden on developers who want to maintain the rhythm to avoid features that aren't integrated with step sizing, and also a burden on developers of future CSS features to integrate all of them with step sizing so that they won't place such a burden on developers.  This makes me inclined to think that the CSS Rhythmic Sizing will work in simple cases but fail in more complex (and realistic) ones.
 
 On the other hand, the CSS Line Grid proposal defines certain elements as establishing a grid, and certain points as aligning to that grid.  This means that if some CSS features don't integrate with the line grid, a small amount of content may be unaligned, but the next use of a feature (blocks, lines) that integrates with the line grid will bring the content back into alignment with the grid.
 
 One of the costs of the line grid proposal is that it requires disabling performance optimizations for moving content vertically during relayout without redoing layout on the internals of that content.  (These optimizations are also disabled in some other cases, such as the presence of floats next to the content.)  However, the optimization only needs to be disabled when moving content by a distance that is not a multiple of the grid height.  When most content fits itself to the grid, such changes will mostly cover small areas of content, though this depends somewhat on what mechanism is used to enable or disable the grid, and in particular whether the mechanism for doing so allows reenabling a grid established by a further ancestor that was disabled on a nearer ancestor (see next section).
+
 ### How to enable the grid?
 
-TODO: write about how flipping fewer properties is better
+Given that the primary use case is simply to switch into a mode where lines maintain vertical rhythm, it would be good to support enabling that use case by setting a single CSS property.
 
-TODO: write about integrating an implicit flip of `line-box-contain`
+Fundamentally there are three (or four) operations:
+
+1. establishing a line grid based on the font and `line-height` of an element
+2. choosing to snap (a) lines and (b) blocks (in that element and its descendants) to that grid (this could count as two if you separate lines and blocks), and
+3. tuning the alignment of blocks that are snapped to the grid.
+
+The operation of establishing the grid must be done by a non-inherited property, whereas the others could be done by either an inherited property or non-inherited property.
+
+The CSS Line Grid proposal puts (1) in a non-inherited `line-grid` property, (2a) in an inherited `line-snap` property, and (2b) and (3) in an inherited `box-snap` property.  CSS Rhythm doesn't technically have (1), but also maintains the same separation between the other properties, while splitting (3) into a set of subproperties for finer control.
+
+I suggest an alternative approach:  puting (1) and (2) in a single non-inherited property, and using properties from CSS Box Alignment for (3).  The initial `auto` value of the property would use the same grid as the parent but not establish a new one, an `establish` value would establish a line grid on the element and use it on that element and any `auto` children (and *their* `auto` children, etc.), and a `none` value would stop using a line grid established by an ancestor.  This alternative approach has the advantage that line snapping could be enabled by a single property.  The tradeoff is that it has the disadvantage that it would not be possible (in this initial version) to enable line-snapping on an element A, disable line snapping on element B (a descendant of A), and then re-enable line-snapping on an element C (a descendant of B) *to the same grid* as the snapping done on A.  I'm not convinced that this use case is important enough to require that every developer who wants to use a line grid specify two CSS properties rather than one.  (If there are examples showing that this case is important, I'd like to see them.)
+
+Making this design choice would still allow later switching to the approach that separates establishment from use by splitting the property to establish and use the grid into a shorthand, where the longhand covering establishing would distinguish between `establish` and the other values, and the longhand covering use would distinguish between `none` and the other values.  This could potentially also be extended to allow named grids, which would be even more powerful, if there were use cases to require that power.  It would, however, constrain the property on use of the grid to be non-inherited, which would be a slight complexity cost for implementations, since they would need to track the nearest ancestor with a non-`auto` value.
+
+It's worth noting, however, that this design choice also has a limitation that may be valuable.  In particular, it limits the areas of the document where a grid needs to be propagated but snapping is not done to only the parts of the CSS formatting model that don't support snapping to the line grid.  This is likely to keep such regions small, which means that the scope of the disabling of the vertical movement performance optimization mentioned in the previous section is also likely to be small.
+
+Finally, I propose that an additional operation be integrated into the enabling of the grid:
+
+4. When the grid is enabled, change the rules for line height calculation to consider `line-height` only on blocks.
+
+This would incorporate one of the two major motivations for `line-box-contain` (the other being to describe quirks mode behavior) without the addition of a new property.  This change would apply the `line-height` property only to blocks, and avoid adding extra space for inline boxes unless their bounds (rather than their bounds plus the half-leading inflating those bounds to the size of the `line-height`) overflows the line box.  This, on its own, tends to produce more reliable line heights, and when combined with line snapping, would drastically reduce the number of lines that need to be double-spaced in order to maintain vertical rhythm.
+
+I think this change could, again, be combined with the single property that does (1) and (2).
 
 ### How to align intrusions within the grid?
 
