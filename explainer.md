@@ -102,3 +102,13 @@ I largely prefer the approach taken in the Line Grid module, because:
 However, the presence of `block-step-align: auto` in the Rhythmic Sizing draft does point out that the `align-self` property could be used here.  There is no existing behavior to interact with since it [currently does not apply to blocks](https://drafts.csswg.org/css-align-3/#align-block).  Using `align-self` appears to provide all of the functionality provided by `block-step-align` or `box-snap`, without introducing a new property.
 
 I'd suggest that the functionality provided by [`block-step-round`](https://drafts.csswg.org/css-rhythm/#block-step-round) and [`block-step-insert`](https://drafts.csswg.org/css-rhythm/#block-step-insert) may not be needed.  If there are use cases that require this functionality, I'd like to hear about them.
+
+## Putting things together
+
+### Properties
+
+TODO: Write
+
+### Examples
+
+TODO: Write
