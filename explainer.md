@@ -86,4 +86,19 @@ I think this change could, again, be combined with the single property that does
 
 ### How to align intrusions within the grid?
 
-TODO: compare approaches in line-grid and rhythm, vs. using css-align mechanisms directly
+As stated above, there is a requirement for either centering or start-aligning intrusions within the grid that do not have lines snapped to the grid (for example, blockquotes in a smaller font) (see the last of the Use Cases above).  It seems like (although I'm not sure) there may also be things that are not lines in the CSS model, but that in terms of the design fill the role of lines, and thus require baseline alignment.
+
+Controlling this alignment is control (3) in the list of operations above about how to enable the grid.
+
+The [CSS Line Grid Module](https://drafts.csswg.org/css-line-grid/) has just a single `box-snap` property, taking values `none`, `block-start`, `block-end`, `center`, `baseline` and `last-baseline`.  It defaults to `none` because the property also controls (2b).
+
+The [CSS Rhythmic Sizing](https://drafts.csswg.org/css-rhythm/) draft has a more complicated model.  It controls operation (2b) with a property that sets the size (since the module has no control for (1)), `block-step-size`.  This property changes the size of the block, rather than its alignment within a space.  There are then additional properties: `block-step-insert` to say where the space adjustment goes (margin or padding), `block-step-align` to say whether the space adjustment goes on the block-start side, the block-end side, or (for centering) both (which, confusingly and perhaps mistakenly, means the block is aligned to the opposite side) and an `auto` value to honor `align-self`, and `block-step-round` to say whether the adjustment is done by adding space, removing space, or whichever would be a smaller adjustment.
+
+I largely prefer the approach taken in the Line Grid module, because:
+* I believe it fits better with the concept of a grid
+* it allows baseline alignment, which may be important (although I'm not sure)
+* it doesn't have the option for reducing space, which risks causing overlap
+
+However, the presence of `block-step-align: auto` in the Rhythmic Sizing draft does point out that the `align-self` property could be used here.  There is no existing behavior to interact with since it [currently does not apply to blocks](https://drafts.csswg.org/css-align-3/#align-block).  Using `align-self` appears to provide all of the functionality provided by `block-step-align` or `box-snap`, without introducing a new property.
+
+I'd suggest that the functionality provided by [`block-step-round`](https://drafts.csswg.org/css-rhythm/#block-step-round) and [`block-step-insert`](https://drafts.csswg.org/css-rhythm/#block-step-insert) may not be needed.  If there are use cases that require this functionality, I'd like to hear about them.
