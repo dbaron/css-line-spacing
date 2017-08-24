@@ -26,7 +26,7 @@ This document attempts to unify ideas from *four* proposals:
 * The [CSS Line Grid Module](https://drafts.csswg.org/css-line-grid/) draft (2011-2017) (incubation / [exploring](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process) stage), which was addressing this problem
 * The [CSS Rhythmic Sizing](https://drafts.csswg.org/css-rhythm/) draft (2016-2017) (incubation / [exploring](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process) stage), which was also addressing this problem
 * The `line-box-contain` property ([2001 draft](https://www.w3.org/TR/2001/WD-css3-box-20010726/#the-line-box-contain), [2009 editor's draft](http://web.archive.org/web/20090225000117/http://dev.w3.org:80/csswg/css3-linebox/#LineStacking)) (2000-2003, 2008) (incubation / [exploring](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process) stage), which was related to providing more options for how line spacing could work
-* The [CSS Box Alignment Module](https://drafts.csswg.org/css-align/) draft (2012-2017) ([refining / testing](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process) stage), which can be used for how block-line objects fit within a line grid
+* The [CSS Box Alignment Module](https://drafts.csswg.org/css-align-3/) draft (2012-2017) ([refining / testing](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process) stage), which can be used for how block-line objects fit within a line grid
 
 ## Use cases
 
@@ -107,7 +107,15 @@ I'd suggest that the functionality provided by [`block-step-round`](https://draf
 
 ### Properties
 
-TODO: Write
+* `line-grid`: `auto` | `establish` | `none`
+** Initial value is `auto`
+** not inherited
+** An element with `establish` establishes a new line grid (a set of baselines repeating at the `line-height` interval) based on its `line-height` and font properties.
+** A line or block <var>P</var> participates in a line grid if its closest ancestor-or-self <var>A</var> that has a value other than `auto` has the value `establish`, and <var>P</var> participates in the grid established by <var>A</var>.
+** Line height computations for a line that participates in a line grid consider the `line-height` property only on blocks.
+* [`align-self`](https://drafts.csswg.org/css-align-3/#align-self-property): `auto` | `normal` | `stretch` | &#x5b; `first` | `last` ]? `baseline` | &#x5b; `unsafe` | `safe` ]? &#x5b; `center` | `start` | `end` | `self-start` | `self-end` | `flex-start` | `flex-end` ]
+** use existing property to align intrusions
+** behavior of `normal` is probably to have no snapping to the line grid (?)
 
 ### Examples
 
