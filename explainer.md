@@ -108,14 +108,14 @@ I'd suggest that the functionality provided by [`block-step-round`](https://draf
 ### Properties
 
 * `line-grid`: `auto` | `establish` | `none`
-** Initial value is `auto`
-** not inherited
-** An element with `establish` establishes a new line grid (a set of baselines repeating at the `line-height` interval) based on its `line-height` and font properties.
-** A line or block <var>P</var> participates in a line grid if its closest ancestor-or-self <var>A</var> that has a value other than `auto` has the value `establish`, and <var>P</var> participates in the grid established by <var>A</var>.
-** Line height computations for a line that participates in a line grid consider the `line-height` property only on blocks.
+  * Initial value is `auto`
+  * not inherited
+  * An element with `establish` establishes a new line grid (a set of baselines repeating at the `line-height` interval) based on its `line-height` and font properties.
+  * A line or block <var>P</var> participates in a line grid if its closest ancestor-or-self <var>A</var> that has a value other than `auto` has the value `establish`, and <var>P</var> participates in the grid established by <var>A</var>.
+  * Line height computations for a line that participates in a line grid consider the `line-height` property only on blocks.
 * [`align-self`](https://drafts.csswg.org/css-align-3/#align-self-property): `auto` | `normal` | `stretch` | &#x5b; `first` | `last` ]? `baseline` | &#x5b; `unsafe` | `safe` ]? &#x5b; `center` | `start` | `end` | `self-start` | `self-end` | `flex-start` | `flex-end` ]
-** use existing property to align intrusions
-** behavior of `normal` is probably to have no snapping to the line grid (?)
+  * use existing property to align intrusions
+  * behavior of `normal` is probably to have no snapping to the line grid (?)
 
 ### Examples
 
