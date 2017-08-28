@@ -92,7 +92,7 @@ Controlling this alignment is control (3) in the list of operations above about 
 
 The [CSS Line Grid Module](https://drafts.csswg.org/css-line-grid/) has just a single `box-snap` property, taking values `none`, `block-start`, `block-end`, `center`, `baseline` and `last-baseline`.  It defaults to `none` because the property also controls (2b).
 
-The [CSS Rhythmic Sizing](https://drafts.csswg.org/css-rhythm/) draft has a more complicated model.  It controls operation (2b) with a property that sets the size (since the module has no control for (1)), `block-step-size`.  This property changes the size of the block, rather than its alignment within a space.  There are then additional properties: `block-step-insert` to say where the space adjustment goes (margin or padding), `block-step-align` to say whether the space adjustment goes on the block-start side, the block-end side, or (for centering) both (which, confusingly and perhaps mistakenly, means the block is aligned to the opposite side) and an `auto` value to honor `align-self`, and `block-step-round` to say whether the adjustment is done by adding space, removing space, or whichever would be a smaller adjustment.
+The [CSS Rhythmic Sizing](https://drafts.csswg.org/css-rhythm/) draft has a more complicated model.  It controls operation (2b) with a property that sets the size (since the module has no control for (1)), `block-step-size`.  This property changes the size of the block, rather than its alignment within a space.  There are then additional properties: `block-step-insert` to say where the space adjustment goes (margin or padding), `block-step-align` to say whether the space adjustment goes on the block-start side, the block-end side, or (for centering) both (though it was apparently intended to refer to the opposite side) and an `auto` value to honor `align-self`, and `block-step-round` to say whether the adjustment is done by adding space, removing space, or whichever would be a smaller adjustment.
 
 I largely prefer the approach taken in the Line Grid module, because:
 * I believe it fits better with the concept of a grid
@@ -100,6 +100,8 @@ I largely prefer the approach taken in the Line Grid module, because:
 * it doesn't have the option for reducing space, which risks causing overlap
 
 However, the presence of `block-step-align: auto` in the Rhythmic Sizing draft does point out that the `align-self` property could be used here.  There is no existing behavior to interact with since it [currently does not apply to blocks](https://drafts.csswg.org/css-align-3/#align-block).  Using `align-self` appears to provide all of the functionality provided by `block-step-align` or `box-snap`, without introducing a new property.
+
+Thus I would propose that `align-self` apply to block-level boxes whose *containing block* has a line grid.  The `normal` value would mean that no snapping to the line grid occurs.  The other values would be coerced to either `start`, `center`, or `end`.  For `start` and `end` the relevant edge of the block-level box would be aligned to a line-start or line-end position established by the line grid, with the minimum amounts of extra space on both sides required for that alignment.  The `center` value would add extra space in order to center the block-level box.  (Is it the margin-edge or the border-edge of the block-level box that is being aligned?  And is it being aligned to the line-start or line-end edge of the font, or the edge of the line box with the `line-height` included, or something else?)
 
 I'd suggest that the functionality provided by [`block-step-round`](https://drafts.csswg.org/css-rhythm/#block-step-round) and [`block-step-insert`](https://drafts.csswg.org/css-rhythm/#block-step-insert) may not be needed.  If there are use cases that require this functionality, I'd like to hear about them.
 
@@ -113,9 +115,11 @@ I'd suggest that the functionality provided by [`block-step-round`](https://draf
   * An element with `establish` establishes a new line grid (a set of baselines repeating at the `line-height` interval) based on its `line-height` and font properties.
   * A line or block <var>P</var> participates in a line grid if its closest ancestor-or-self <var>A</var> that has a value other than `auto` has the value `establish`, and <var>P</var> participates in the grid established by <var>A</var>.
   * Line height computations for a line that participates in a line grid consider the `line-height` property only on blocks.
+    * TODO: Do we want a fourth value that switches to the new line height algorithm without establishing a grid, or should that be a separate property?
 * [`align-self`](https://drafts.csswg.org/css-align-3/#align-self-property): `auto` | `normal` | `stretch` | &#x5b; `first` | `last` ]? `baseline` | &#x5b; `unsafe` | `safe` ]? &#x5b; `center` | `start` | `end` | `self-start` | `self-end` | `flex-start` | `flex-end` ]
-  * use existing property to align intrusions
-  * behavior of `normal` is probably to have no snapping to the line grid (?)
+  * use existing property to align block-level intrusions
+  * behavior of `normal` is probably to have no snapping to the line grid
+  * other values coerce to `start` / `center` / `end` and add extra space to align the block-level box to the grid
 
 ### Examples
 
