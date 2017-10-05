@@ -115,11 +115,20 @@ I'd suggest that the functionality provided by [`block-step-round`](https://draf
   * An element with `establish` establishes a new line grid (a set of baselines repeating at the `line-height` interval) based on its `line-height` and font properties.
   * A line or block <var>P</var> participates in a line grid if its closest ancestor-or-self <var>A</var> that has a value other than `auto` has the value `establish`, and <var>P</var> participates in the grid established by <var>A</var>.
   * Line height computations for a line that participates in a line grid consider the `line-height` property only on blocks.
-    * TODO: Do we want a fourth value that switches to the new line height algorithm without establishing a grid, or should that be a separate property?
 * [`align-self`](https://drafts.csswg.org/css-align-3/#align-self-property): `auto` | `normal` | `stretch` | &#x5b; `first` | `last` ]? `baseline` | &#x5b; `unsafe` | `safe` ]? &#x5b; `center` | `start` | `end` | `self-start` | `self-end` | `flex-start` | `flex-end` ]
-  * use existing property to align block-level intrusions
+  * use existing property to align block-level intrusions within their containing block's line grid
   * behavior of `normal` is probably to have no snapping to the line grid
   * other values coerce to `start` / `center` / `end` and add extra space to align the block-level box to the grid
+  * most useful on intrusions that also have `line-grid: none` (or maybe `line-grid: establish`), so that the intrusion aligns within its parent grid
+
+### Open Issues
+
+ISSUE: Should there be a way to switch to the new line height algorithm without establishing a grid?  This could be done either by adding a fourth value to `line-grid` (which would not be particularly related to line grids) or by splitting the concept into a separate property?
+
+ISSUE:  This doesn't support having an intrusion within the line grid, after which the line grid starts again, but with new positions rather than matched to the grid before the intrusion.  Instead, it only supports either:
+* aligning the intrusion within the single grid by adding extra space on one or both sides, or
+* just using the new line height algorithm without actually establishing a grid.
+Is this important (e.g., for non-column, non-paged cases)?
 
 ### Examples
 
