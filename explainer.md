@@ -123,11 +123,12 @@ I'd suggest that the functionality provided by [`block-step-round`](https://draf
 
 ### Open Issues
 
-ISSUE: Should there be a way to switch to the new line height algorithm without establishing a grid?  This could be done either by adding a fourth value to `line-grid` (which would not be particularly related to line grids) or by splitting the concept into a separate property?
+**ISSUE**: Should there be a way to switch to the new line height algorithm without establishing a grid?  This could be done either by adding a fourth value to `line-grid` (which would not be particularly related to line grids) or by splitting the concept into a separate property?
 
-ISSUE:  This doesn't support having an intrusion within the line grid, after which the line grid starts again, but with new positions rather than matched to the grid before the intrusion.  Instead, it only supports either:
+**ISSUE**:  This doesn't support having an intrusion within the line grid, after which the line grid starts again, but with new positions rather than matched to the grid before the intrusion.  Instead, it only supports either:
 * aligning the intrusion within the single grid by adding extra space on one or both sides, or
 * just using the new line height algorithm without actually establishing a grid.
+
 Is this important (e.g., for non-column, non-paged cases)?
 
 ### Examples
