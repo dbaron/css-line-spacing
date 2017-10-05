@@ -132,4 +132,35 @@ Is this important (e.g., for non-column, non-paged cases)?
 
 ### Examples
 
-TODO: Write
+A simple example that might be used for parts of the styling for a simple article or book:
+
+```css
+html {
+  line-height: 1.4;
+
+  /* create the main grid for the document */
+  line-grid: establish;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* lines within headers don't snap to the grid */
+  line-grid: none;
+
+  /* place extra space above the header so that what continues
+     below aligns with the grid */
+  align-self: end;
+}
+
+blockquote {
+  /* blockquotes have a smaller font, and establish their own
+     line grid */
+  font-size: 0.85rem;
+  line-grid: establish;
+
+  /* the blockquote is centered within its containing grid, so
+     the content after the blockquote resumes being aligned to
+     the grid, by adding space on both sides of the blockquote */
+  align-self: center;
+}
+
+```
