@@ -41,7 +41,7 @@ This can be important for:
 * facing pages
 * adjacent boxes of various sorts (columns, grid cells, etc.)
 
-However, it should also be possible to avoid alignment of baselines in adjacent boxes, since causing such alignment requires the insertion of extra spacing in some cases (e.g., around anything that interrupts the rhythm).
+However, since making all lines match a single grid requires the insertion of extra space that is sometimes undesirable (e.g., around anything that interrupts the rhythm), it should also be possible to opt out of the behavior that makes the baselines in adjacent boxes align.
 
 **It should be possible to choose different alignments for objects that interrupt the rhythm.**
 Some objects will interrupt the rhythm of lines, such as block-level images or figures (necessarily), or quotations printed in a different font (optionally).  Designers wish to choose multiple alignments for such objects.  (See, for example, comments from 小林 敏 (KOBAYASHI Toshi, こばやし とし, Kobayashi-sensei) in the [2017 April 20 discussion](https://lists.w3.org/Archives/Public/www-style/2017May/0050.html) under "Rhythm discussion notes", particularly "Ideal is centered [...], but some things are better top-aligned, e.g. side notes.")
